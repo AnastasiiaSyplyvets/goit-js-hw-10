@@ -44,3 +44,7 @@ body {
 .image {
   margin-bottom: none;
 }
+
+.list-item {
+margin-bottom: 20px;
+}
