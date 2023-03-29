@@ -19,7 +19,7 @@ const countryWrapperEl = document.querySelector('.country-info');
 const countryList = document.querySelector('.country-list');
 // let savedDataLength = inputEl.value.length;
 
-
+let countryListArr = [];
 inputEl.addEventListener('input', debounce((event) => {
       
     event.preventDefault();
@@ -69,14 +69,30 @@ inputEl.addEventListener('input', debounce((event) => {
 
                 else if(data.length >= 2 && data.length <= 10) 
         {
+               
+                        countryWrapperEl.innerHTML = ``;
                 
-                countryWrapperEl.innerHTML = ``;
                 countryList.innerHTML += `<div class="country-titel">
                 
                 <img class="image" src= ${country.flags.svg} width="40px" height="20px"><p class="country-name"> ${country.name.official}</p></div>
                 <ul class="list">`;
 
-              
+//                 countryListArr.push(...data);
+//                 console.log(countryListArr)
+
+//                let newListArr =  countryListArr.reduce((item1, item2)=>{
+//                 if(!item1.find((el, i, arr)=>el.name.official === i.name.official)){
+//                         item1.push(item2)
+//                 }
+// return item1;
+//                }, [])
+
+//                console.log(newListArr)
+                
+        
+                
+
+                
      
          }
 // else if ( value.length < savedDataLength) {
