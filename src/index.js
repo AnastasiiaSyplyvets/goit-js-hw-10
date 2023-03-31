@@ -9,17 +9,15 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 
 
 
-
-
 const DEBOUNCE_DELAY = 300;
 
 const inputEl = document.querySelector('input');
 
 const countryWrapperEl = document.querySelector('.country-info');
 const countryList = document.querySelector('.country-list');
-// let savedDataLength = inputEl.value.length;
 
-let countryListArr = [];
+
+
 inputEl.addEventListener('input', debounce((event) => {
       
     event.preventDefault();
@@ -36,87 +34,76 @@ inputEl.addEventListener('input', debounce((event) => {
     }
         fetchCountries(value).then(data => {
                 
-                console.log(data)
+        console.log(data)
 
-        data.map((country)=> {
-                        
-                console.log(country)
-        const languagesEl = Object.values(country.languages);
-                
-        
-                
- if(data.length === 0) {
-       
-        countryWrapperEl.innerHTML = ``;
-        countryList.innerHTML = '';
-}
-
-                else if(data.length === 1) {
-                     
+        if(data.length > 10) {
                 countryList.innerHTML = ``;
-                                
-                countryWrapperEl.innerHTML = `
+                countryWrapperEl.innerHTML = ``;
+                        
                
-                <div class="country-titel">
-                <img class="image" src= ${country.flags.svg} width="40px" height="20px"><p class="country-name"> ${country.name.official}</p></div>
-                <ul class="list">
-                <li class = "list-item"><span class="key">Capital: </span> ${country.capital}</li>
-                <li class = "list-item"><span class="key">Population: </span> ${country.population}</li>
-                <li class = "list-item"><span class="key">Languages: </span>${languagesEl}</li>
-                </ul>`;
-                 
-                }
+              Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+        //       return;
+        }
 
-                else if(data.length >= 2 && data.length <= 10) 
+
+        else if(data.length >= 2 && data.length <= 10) 
         {
                
-                        countryWrapperEl.innerHTML = ``;
+countryWrapperEl.innerHTML = ``;
                 
+const createCountryListMarkup = (data) => {
+        data.map((country) => {
+
                 countryList.innerHTML += `<div class="country-titel">
                 
                 <img class="image" src= ${country.flags.svg} width="40px" height="20px"><p class="country-name"> ${country.name.official}</p></div>
                 <ul class="list">`;
+        })
+        return countryList;
+}
 
-//                 countryListArr.push(...data);
-//                 console.log(countryListArr)
-
-//                let newListArr =  countryListArr.reduce((item1, item2)=>{
-//                 if(!item1.find((el, i, arr)=>el.name.official === i.name.official)){
-//                         item1.push(item2)
-//                 }
-// return item1;
-//                }, [])
-
-//                console.log(newListArr)
-                
-        
-                
-
-                
+countryList.innerHTML = ``;
+createCountryListMarkup(data);
      
          }
-// else if ( value.length < savedDataLength) {
-        
-//         console.log("hello");
+                
+        else if(data.length === 0) {
+       
+        countryWrapperEl.innerHTML = ``;
+        countryList.innerHTML = '';
+        }
 
-     
-// }
-        else {
+        else if(data.length === 1) {
+                     
                 countryList.innerHTML = ``;
-                countryWrapperEl.innerHTML = ``;
-
-                        
                
-              Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
-                
-                controller.abort();
-                
+                                
+                const createCountryCard = (data) => {
+                        data.map((country) => {
+                                const languagesEl = Object.values(country.languages);
+
+                                countryWrapperEl.innerHTML = `
+               
+                                <div class="country-titel">
+                                <img class="image" src= ${country.flags.svg} width="40px" height="20px"><p class="country-name"> ${country.name.official}</p></div>
+                                <ul class="list">
+                                <li class = "list-item"><span class="key">Capital: </span> ${country.capital}</li>
+                                <li class = "list-item"><span class="key">Population: </span> ${country.population}</li>
+                                <li class = "list-item"><span class="key">Languages: </span>${languagesEl}</li>
+                                </ul>`;
+
+                                
+                        })
+                        return countryWrapperEl;
+                }
+               
+                createCountryCard(data);
         }
      
-        
+     
         })
         
-})
+
         .catch(error => {
                 countryList.innerHTML = ``;
                 countryWrapperEl.innerHTML =``;
@@ -125,4 +112,4 @@ inputEl.addEventListener('input', debounce((event) => {
         })
         
     
-}, DEBOUNCE_DELAY));
+}, DEBOUNCE_DELAY))
